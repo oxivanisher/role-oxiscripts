@@ -5,7 +5,7 @@
     name: rsync
     state: present
 
-#basic install
+# basic install
 - name: check if already installed
   ansible.builtin.stat: path=/etc/oxiscripts/
   register: oxiscripts_dir
@@ -27,7 +27,7 @@
     state: absent
   when: not oxiscripts_dir.stat.exists
 
-#basic configuration
+# basic configuration
 - name: set root email
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/setup.sh
@@ -41,14 +41,14 @@
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     regexp: '^rsyncbackup /mnt/backup rsync://backup@your.host.com/rsync-dir "--bwlimit=1000"'
     line: '#rsyncbackup /mnt/backup rsync://backup@your.host.com/rsync-dir "--bwlimit=1000"'
-  changed_when: False
+  changed_when: false
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: configure base rsync backup
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     regexp: 'rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }}'
-    line: 'EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts.rsync.password }}" rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }} ""'
+    line: 'EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts.rsync.password }}" rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }} ""'  # noqa 204
   notify: enable rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
