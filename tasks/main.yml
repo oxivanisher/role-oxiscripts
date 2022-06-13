@@ -7,7 +7,7 @@
 
 #basic install
 - name: check if already installed
-  stat: path=/etc/oxiscripts/
+  ansible.builtin.stat: path=/etc/oxiscripts/
   register: oxiscripts_dir
 
 - name: fetch installer
@@ -18,7 +18,7 @@
   when: not oxiscripts_dir.stat.exists
 
 - name: run installer
-  shell: /tmp/install.sh
+  ansible.builtin.shell: /tmp/install.sh
   when: not oxiscripts_dir.stat.exists
 
 - name: remove installer
