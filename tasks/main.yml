@@ -59,7 +59,7 @@
     dest: /etc/oxiscripts/jobs/backup-documents.sh
     line: "{{ item }}"
   loop: "{{ oxiscripts.documents_backup[ansible_hostname] | default([]) }}"
-  notify: enable documents-backup
+  notify: enable daily documents-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
 # backup additional rsync
@@ -67,14 +67,14 @@
   ansible.builtin.file:
     path: /etc/cron.daily/backup-rsync
     state: absent
-  notify: enable rsync-backup
+  notify: enable daily rsync-backup
 
 - name: configure additional rsync backups
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     line: "{{ item }}"
   loop: "{{ oxiscripts.rsync_backup[ansible_hostname] | default([]) }}"
-  notify: enable rsync-backup
+  notify: enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
 # configure cleanup
@@ -82,12 +82,12 @@
   ansible.builtin.file:
     path: /etc/cron.daily/backup-cleanup
     state: absent
-  notify: enable backup-cleanup
+  notify: enable daily backup-cleanup
 
 - name: configure backup cleanup
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-cleanup.sh
     regexp: '^backupcleanup'
     line: "backupcleanup 60"
-  notify: enable backup-cleanup
+  notify: enable daily backup-cleanup
   ignore_errors: "{{ ansible_check_mode }}"
