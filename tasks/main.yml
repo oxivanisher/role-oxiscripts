@@ -63,6 +63,12 @@
   ignore_errors: "{{ ansible_check_mode }}"
 
 # backup additional rsync
+- name: removing old rsync backup link
+  ansible.builtin.file:
+    path: /etc/cron.daily/backup-rsync
+    state: absent
+  notify: enable rsync-backup
+
 - name: configure additional rsync backups
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
@@ -76,6 +82,7 @@
   ansible.builtin.file:
     path: /etc/cron.daily/backup-cleanup
     state: absent
+  notify: enable backup-cleanup
 
 - name: configure backup cleanup
   ansible.builtin.lineinfile:
