@@ -7,7 +7,8 @@
 
 # basic install
 - name: check if already installed
-  ansible.builtin.stat: path=/etc/oxiscripts/
+  ansible.builtin.stat:
+    path: /etc/oxiscripts/
   register: oxiscripts_dir
 
 - name: fetch installer
@@ -15,17 +16,17 @@
     url: '{{ oxiscripts.mirror }}'
     dest: /tmp/install.sh
     mode: 0755
-  when: not oxiscripts_dir.stat.exists
+  when: not oxiscripts_dir.stat.exists or oxiscripts_update
 
 - name: run installer
   ansible.builtin.shell: /tmp/install.sh
-  when: not oxiscripts_dir.stat.exists
+  when: not oxiscripts_dir.stat.exists or oxiscripts_update
 
 - name: remove installer
   ansible.builtin.file:
     path: /tmp/install.sh
     state: absent
-  when: not oxiscripts_dir.stat.exists
+  when: not oxiscripts_dir.stat.exists or oxiscripts_update
 
 # basic configuration
 - name: set root email
