@@ -71,6 +71,11 @@
   ignore_errors: "{{ ansible_check_mode }}"
 
 # configure cleanup
+- name: removing old daily backup cleanup link
+  ansible.builtin.file:
+    path: /etc/cron.daily/backup-cleanup
+    state: absent
+
 - name: configure backup cleanup
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-cleanup.sh
