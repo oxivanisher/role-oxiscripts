@@ -1,7 +1,10 @@
-Role Name
-=========
+oxiscripts
+==========
 
-A brief description of the role goes here.
+Install and configure oxiscripts.
+
+To update oxiscripts, you need to set the `oxiscripts_update` variable to true. For example `ansible-playbook site.yml all --extra-vars oxiscripts_update=true`
+
 
 Requirements
 ------------
