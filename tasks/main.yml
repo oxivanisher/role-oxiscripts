@@ -52,15 +52,6 @@
   notify: enable rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
-# backup additional rsync
-- name: configure additional rsync backups
-  ansible.builtin.lineinfile:
-    dest: /etc/oxiscripts/jobs/backup-rsync.sh
-    line: "{{ item }}"
-  loop: "{{ oxiscripts.rsync_backup[ansible_hostname] | default([]) }}"
-  notify: enable rsync-backup
-  ignore_errors: "{{ ansible_check_mode }}"
-
 # backup documents
 - name: configure documents backup script
   ansible.builtin.lineinfile:
@@ -68,6 +59,15 @@
     line: "{{ item }}"
   loop: "{{ oxiscripts.documents_backup[ansible_hostname] | default([]) }}"
   notify: enable documents-backup
+  ignore_errors: "{{ ansible_check_mode }}"
+
+# backup additional rsync
+- name: configure additional rsync backups
+  ansible.builtin.lineinfile:
+    dest: /etc/oxiscripts/jobs/backup-rsync.sh
+    line: "{{ item }}"
+  loop: "{{ oxiscripts.rsync_backup[ansible_hostname] | default([]) }}"
+  notify: enable rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
 # configure cleanup

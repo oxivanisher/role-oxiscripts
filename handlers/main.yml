@@ -1,6 +1,6 @@
 ---
 
-- name: enable documents-backup
+- name: enable daily documents-backup
   ansible.builtin.file:
     src: /etc/oxiscripts/jobs/backup-documents.sh
     dest: /etc/cron.daily/backup-documents
@@ -8,18 +8,18 @@
     group: root
     state: link
 
-- name: enable rsync-backup
+- name: enable daily backup-cleanup
   ansible.builtin.file:
-    src: /etc/oxiscripts/jobs/backup-rsync.sh
-    dest: /etc/cron.daily/backup-rsync
+    src: /etc/oxiscripts/jobs/backup-cleanup.sh
+    dest: /etc/cron.daily/backup-Z98-cleanup
     owner: root
     group: root
     state: link
 
-- name: enable backup-cleanup
+- name: enable daily rsync-backup
   ansible.builtin.file:
-    src: /etc/oxiscripts/jobs/backup-cleanup.sh
-    dest: /etc/cron.daily/backup-cleanup
+    src: /etc/oxiscripts/jobs/backup-rsync.sh
+    dest: /etc/cron.daily/backup-Z99-rsync
     owner: root
     group: root
     state: link
