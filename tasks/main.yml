@@ -38,12 +38,12 @@
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-cleanup.sh.new /etc/oxiscripts/jobs/backup-cleanup.sh
   when: oxiscript_new_backup_cleanup.stat.exists
 
-- name: Check for new system-backup script version
+- name: Check for new backup-system script version
   ansible.builtin.stat:
     path: /etc/oxiscripts/jobs/backup-system.sh.new
   register: oxiscript_new_system_backup
 
-- name: Use new system-backup script version
+- name: Use new backup-system script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-system.sh.new /etc/oxiscripts/jobs/backup-system.sh
   when: oxiscript_new_system_backup.stat.exists
 
