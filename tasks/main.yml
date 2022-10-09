@@ -28,6 +28,16 @@
     state: absent
   when: not oxiscripts_dir.stat.exists or oxiscripts_update
 
+# "temp" for backup upgrade
+- name: Check for new system-backup version
+  ansible.builtin.stat:
+    path: /etc/oxiscripts/jobs/backup-system.sh.new
+  register: oxiscript_new_system_backup
+
+- name: Use new system-backup script version
+  ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-system.sh.new /etc/oxiscripts/jobs/backup-system.sh
+  when: oxiscript_new_system_backup.stat.exists
+
 # basic configuration
 - name: Set root email
   ansible.builtin.lineinfile:
