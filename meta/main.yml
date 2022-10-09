@@ -1,5 +1,6 @@
 galaxy_info:
   role_name: oxiscripts
+  namespace: oxivanisher
   author: Marc Urben
   description: Install oxiscripts
   company: Thunderbluff
