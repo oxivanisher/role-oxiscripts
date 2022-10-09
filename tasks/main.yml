@@ -28,8 +28,17 @@
     state: absent
   when: not oxiscripts_dir.stat.exists or oxiscripts_update
 
-# "temp" for backup upgrade
-- name: Check for new system-backup version
+# new backup scripts
+- name: Check for new backup-cleanup script version
+  ansible.builtin.stat:
+    path: /etc/oxiscripts/jobs/backup-cleanup.sh.new
+  register: oxiscript_new_backup_cleanup
+
+- name: Use new backup-cleanup script version
+  ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-cleanup.sh.new /etc/oxiscripts/jobs/backup-cleanup.sh
+  when: oxiscript_new_backup_cleanup.stat.exists
+
+- name: Check for new system-backup script version
   ansible.builtin.stat:
     path: /etc/oxiscripts/jobs/backup-system.sh.new
   register: oxiscript_new_system_backup
@@ -37,6 +46,15 @@
 - name: Use new system-backup script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-system.sh.new /etc/oxiscripts/jobs/backup-system.sh
   when: oxiscript_new_system_backup.stat.exists
+
+- name: Check for new backup-scripts script version
+  ansible.builtin.stat:
+    path: /etc/oxiscripts/jobs/backup-scripts.sh.new
+  register: oxiscript_new_backup_scripts
+
+- name: Use new backup-scripts script version
+  ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-scripts.sh.new /etc/oxiscripts/jobs/backup-scripts.sh
+  when: oxiscript_new_backup_scripts.stat.exists
 
 # basic configuration
 - name: Set root email
