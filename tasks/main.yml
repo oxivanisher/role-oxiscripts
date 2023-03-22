@@ -20,6 +20,7 @@
 
 - name: Run oxiscripts installer
   ansible.builtin.shell: /tmp/install.sh
+  changed_when: true
   when: not oxiscripts_dir.stat.exists or oxiscripts_update
 
 - name: Remove oxiscripts installer
@@ -36,6 +37,7 @@
 
 - name: Use new backup-cleanup script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-cleanup.sh.new /etc/oxiscripts/jobs/backup-cleanup.sh
+  changed_when: true
   when: oxiscript_new_backup_cleanup.stat.exists
 
 - name: Check for new backup-system script version
@@ -45,6 +47,7 @@
 
 - name: Use new backup-system script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-system.sh.new /etc/oxiscripts/jobs/backup-system.sh
+  changed_when: true
   when: oxiscript_new_system_backup.stat.exists
 
 - name: Check for new backup-scripts script version
@@ -54,6 +57,7 @@
 
 - name: Use new backup-scripts script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-scripts.sh.new /etc/oxiscripts/jobs/backup-scripts.sh
+  changed_when: true
   when: oxiscript_new_backup_scripts.stat.exists
 
 # basic configuration
