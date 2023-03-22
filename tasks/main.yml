@@ -15,7 +15,7 @@
   ansible.builtin.get_url:
     url: '{{ oxiscripts.mirror }}'
     dest: /tmp/install.sh
-    mode: 0755
+    mode: "0755"
   when: not oxiscripts_dir.stat.exists or oxiscripts_update
 
 - name: Run oxiscripts installer
