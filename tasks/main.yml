@@ -1,5 +1,4 @@
 ---
-
 - name: Ensure rsync
   ansible.builtin.package:
     name: rsync
@@ -13,12 +12,12 @@
 
 - name: Fetch oxiscripts installer
   ansible.builtin.get_url:
-    url: '{{ oxiscripts.mirror }}'
+    url: "{{ oxiscripts.mirror }}"
     dest: /tmp/install.sh
     mode: "0755"
   when: not oxiscripts_dir.stat.exists or oxiscripts_update
 
-- name: Run oxiscripts installer
+- name: Run oxiscripts installer # noqa: command-instead-of-shell
   ansible.builtin.shell: /tmp/install.sh
   changed_when: true
   when: not oxiscripts_dir.stat.exists or oxiscripts_update
@@ -64,8 +63,8 @@
 - name: Set root email
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/setup.sh
-    regexp: '^export ADMINMAIL='
-    line: 'export ADMINMAIL={{ oxiscripts.email }}'
+    regexp: "^export ADMINMAIL="
+    line: "export ADMINMAIL={{ oxiscripts.email }}"
   ignore_errors: "{{ ansible_check_mode }}"
 
 # backup rsync
@@ -80,8 +79,8 @@
 - name: Configure base rsync backup
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
-    regexp: 'rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }}'
-    line: 'EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts.rsync.password }}" rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }} ""'  # noqa 204
+    regexp: "rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }}"
+    line: 'EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts.rsync.password }}" rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }} ""' # noqa 204
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
@@ -119,7 +118,7 @@
 - name: Configure backup cleanup
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-cleanup.sh
-    regexp: '^backupcleanup'
+    regexp: "^backupcleanup"
     line: "backupcleanup 60"
   notify: Enable daily backup-cleanup
   ignore_errors: "{{ ansible_check_mode }}"
