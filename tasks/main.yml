@@ -80,7 +80,9 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     regexp: "rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }}"
-    line: 'EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts.rsync.password }}" rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }} ""' # noqa 204
+    line: >
+      EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts.rsync.password }}" rsyncbackup /mnt/backup/
+      {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }} ""
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
