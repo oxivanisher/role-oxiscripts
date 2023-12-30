@@ -1,35 +1,50 @@
 oxiscripts
 ==========
 
-Install and configure oxiscripts.
-
-To update oxiscripts, you need to set the `oxiscripts_update` variable to true. For example `ansible-playbook site.yml all --extra-vars oxiscripts_update=true`
-
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Install and configure [oxiscripts](https://github.com/oxivanisher/oxiscripts).
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name          | Comment                              | Default value |
+|---------------|--------------------------------------|---------------|
+| oxiscripts_update | Upgrade oxiscripts. Be aware that this might not be 100% idempotent, so it is defaulted to be `false`. | `False`          |
+| oxiscripts_mirror | URL to the oxiscripts installer script. | `https://oxi.ch/files/install.sh`          |
+| oxiscripts_email  | Email address where notifications are sent to. | `root@example.lan`          |
+| oxiscripts_rsync_server | Rsync server for backups |          |
+| oxiscripts_rsync_user  | Rsync user for backups |          |
+| oxiscripts_rsync_password | Rsync password for backups |           |
+| oxiscripts_rsync_path | Rsync path for backups |           |
+| oxiscripts_documents_backup  | List of backup targets for rdiff-backups | `[]`          |
+| oxiscripts_rsync_backup | List of backup targets for rsync backups | `[]`          |
 
-Dependencies
-------------
+* To update oxiscripts, you need to set the `oxiscripts_update` variable to true. For example `ansible-playbook site.yml all --extra-vars oxiscripts_update=true`
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* Example for `oxiscripts_documents_backup`:
+  ```yaml
+  - EXCLUDED_DIR="" rdiffbackup /srv/service_a/ factorio-server 1M
+  ```
+  This backups `/srv/service_a/` to the rsync server locally and finally to the rsync server into the directory `factorio-server`. Backups older than 1 month are removed.
+
+* Example for `oxiscripts_rsync_backup`:
+  ```yaml
+  - EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup /srv/service_b/ backup@{{ oxiscripts_rsync_server }}::rsync-backup/service_b "--delete"
+  ```
+  This backups `/srv/service_b/` to the rsync server into the directory `rsync-backup/service_b`. Files no lonver available locally will be deleted.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
+```yaml
+- name: Install and configure oxiscripts
+  hosts: all
+  collections:
+    - oxivanisher.linux_base
+  roles:
+    - role: oxivanisher.linux_base.oxiscripts
+      tags:
+        - oxiscripts
+```
 License
 -------
 
@@ -38,4 +53,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role is part of the [oxivanisher.linux_base](https://galaxy.ansible.com/ui/repo/published/oxivanisher/linux_base/) collection, and the source for that is located on [github](https://github.com/oxivanisher/collection-linux_base).

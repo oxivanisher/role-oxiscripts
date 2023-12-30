@@ -12,7 +12,7 @@
 
 - name: Fetch oxiscripts installer
   ansible.builtin.get_url:
-    url: "{{ oxiscripts.mirror }}"
+    url: "{{ oxiscripts_mirror }}"
     dest: /tmp/install.sh
     mode: "0755"
   when: not oxiscripts_dir.stat.exists or oxiscripts_update
@@ -64,7 +64,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/setup.sh
     regexp: "^export ADMINMAIL="
-    line: "export ADMINMAIL={{ oxiscripts.email }}"
+    line: "export ADMINMAIL={{ oxiscripts_email }}"
   ignore_errors: "{{ ansible_check_mode }}"
 
 # backup rsync
@@ -79,10 +79,10 @@
 - name: Configure base rsync backup
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
-    regexp: "rsyncbackup /mnt/backup/ {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }}"
+    regexp: "rsyncbackup /mnt/backup/ {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }}"
     line: >
-      EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts.rsync.password }}" rsyncbackup /mnt/backup/
-      {{ oxiscripts.rsync.user }}@{{ oxiscripts.rsync.server }}::{{ oxiscripts.rsync.path }} ""
+      EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup /mnt/backup/
+      {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }} ""
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
@@ -91,7 +91,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-documents.sh
     line: "{{ item }}"
-  loop: "{{ oxiscripts.documents_backup[ansible_hostname] | default([]) }}"
+  loop: "{{ oxiscripts_documents_backup | default([]) }}"
   notify: Enable daily documents-backup
   ignore_errors: "{{ ansible_check_mode }}"
 
@@ -106,7 +106,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     line: "{{ item }}"
-  loop: "{{ oxiscripts.rsync_backup[ansible_hostname] | default([]) }}"
+  loop: "{{ oxiscripts_rsync_backup | default([]) }}"
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
 

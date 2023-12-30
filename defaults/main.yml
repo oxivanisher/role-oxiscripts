@@ -2,3 +2,11 @@
 # defaults file for oxiscripts
 
 oxiscripts_update: false
+oxiscripts_mirror: https://oxi.ch/files/install.sh
+oxiscripts_email: root@example.lan
+oxiscripts_rsync_server:
+oxiscripts_rsync_user:
+oxiscripts_rsync_password:
+oxiscripts_rsync_path:
+oxiscripts_documents_backup: []
+oxiscripts_rsync_backup: []
