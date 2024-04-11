@@ -7,6 +7,8 @@
     owner: root
     group: root
     state: link
+  become: true
+  become_user: root
 
 - name: Enable daily backup-cleanup
   ansible.builtin.file:
@@ -15,6 +17,8 @@
     owner: root
     group: root
     state: link
+  become: true
+  become_user: root
 
 - name: Enable daily rsync-backup
   ansible.builtin.file:
@@ -23,3 +27,5 @@
     owner: root
     group: root
     state: link
+  become: true
+  become_user: root
