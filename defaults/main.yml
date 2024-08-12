@@ -8,5 +8,6 @@ oxiscripts_rsync_server:
 oxiscripts_rsync_user:
 oxiscripts_rsync_password:
 oxiscripts_rsync_path:
+oxiscripts_backup_cleanup: 60
 oxiscripts_documents_backup: []
 oxiscripts_rsync_backup: []

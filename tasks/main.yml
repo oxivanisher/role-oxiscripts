@@ -151,7 +151,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-cleanup.sh
     regexp: "^backupcleanup"
-    line: "backupcleanup 60"
+    line: "backupcleanup {{ oxiscripts_backup_cleanup }}"
   notify: Enable daily backup-cleanup
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
