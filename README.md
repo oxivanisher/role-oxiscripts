@@ -15,7 +15,7 @@ Role Variables
 | oxiscripts_rsync_user  | Rsync user for backups |          |
 | oxiscripts_rsync_password | Rsync password for backups |           |
 | oxiscripts_rsync_path | Rsync path for backups |           |
-| oxiscripts_backup_cleanup | After how many day should beckups be cleaned up | `60` |
+| oxiscripts_backup_cleanup | After how many day should beckups be cleaned up | `60`  |
 | oxiscripts_documents_backup  | List of backup targets for rdiff-backups | `[]`          |
 | oxiscripts_rsync_backup | List of backup targets for rsync backups | `[]`          |
 
