@@ -102,9 +102,10 @@
     regexp: "rsyncbackup /mnt/backup/ {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }}"
     line: >
       EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup /mnt/backup/
-      {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }} ""
+      {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }} "{{ oxiscripts_rsync_mnt_backup_options }}"
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
+  when: oxiscripts_rsync_path | length > 0
   become: true
   become_user: root
 

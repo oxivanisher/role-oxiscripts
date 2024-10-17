@@ -3,6 +3,8 @@ oxiscripts
 
 Install and configure [oxiscripts](https://github.com/oxivanisher/oxiscripts).
 
+Per default, oxiscripts will create a backup of system files (lots of things can be configured in `/etc/oxiscripts/jobs/`) to `/mnt/backup`. When `oxiscripts_rsync_path` is set, it will automatically create a rsync job using the `oxiscripts_rsync_*` options for `/mnt/backup`.
+
 Role Variables
 --------------
 
@@ -15,6 +17,7 @@ Role Variables
 | oxiscripts_rsync_user  | Rsync user for backups |          |
 | oxiscripts_rsync_password | Rsync password for backups |           |
 | oxiscripts_rsync_path | Rsync path for backups |           |
+| oxiscripts_rsync_mnt_backup_options | Rsync options only for `/mnt/backup/` rsync backup |           |
 | oxiscripts_backup_cleanup | After how many day should beckups be cleaned up | `60`  |
 | oxiscripts_documents_backup  | List of backup targets for rdiff-backups | `[]`          |
 | oxiscripts_rsync_backup | List of backup targets for rsync backups | `[]`          |
