@@ -1,5 +1,6 @@
 oxiscripts
 ==========
+[![Ansible Lint](https://github.com/oxivanisher/role-oxiscripts/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/oxivanisher/role-oxiscripts/actions/workflows/ansible-lint.yml)
 
 Install and configure [oxiscripts](https://github.com/oxivanisher/oxiscripts).
 
