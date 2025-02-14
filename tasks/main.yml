@@ -114,7 +114,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-documents.sh
     regexp: "rdiffbackup {{ item.path }}"
-    line: EXCLUDED_DIR="{{ item.exclude | default('lost+found') }}" rdiffbackup {{ item.path }} {{ item.target }} {{ item.duration | default('3M') }}
+    line: EXCLUDED_DIR="{{ item.exclude | default('') }}" rdiffbackup {{ item.path }} {{ item.target }} {{ item.duration | default('3M') }}
   loop: "{{ oxiscripts_documents_backup | default([]) }}"
   notify: Enable daily documents-backup
   ignore_errors: "{{ ansible_check_mode }}"
