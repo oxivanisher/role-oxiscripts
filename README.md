@@ -19,9 +19,48 @@ Role Variables
 | oxiscripts_rsync_password | Rsync password for backups |           |
 | oxiscripts_rsync_path | Rsync path for backups |           |
 | oxiscripts_rsync_mnt_backup_options | Rsync options only for `/mnt/backup/` rsync backup |           |
-| oxiscripts_backup_cleanup | After how many day should beckups be cleaned up | `60`  |
-| oxiscripts_documents_backup  | List of backup targets for rdiff-backups | `[]`          |
-| oxiscripts_rsync_backup | List of backup targets for rsync backups | `[]`          |
+| oxiscripts_backup_cleanup | After how many day should backups be cleaned up | `60`  |
+| oxiscripts_documents_backup  | List of backup targets for rdiff-backups, see the definition below | `[]`          |
+| oxiscripts_rsync_backup | List of backup targets for rsync backups, see the definition below | `[]`          |
+
+The lists of dicts for `oxiscripts_documents_backup` containing the following fields:
+| Name | Comment     | Default value | Example value |
+|-----|---------|-----------------|----------------|
+| path | The path to be backed up | `` | `/opt/myapp/mydata` |
+| exclude | A space separated list of folders to be excluded | `lost+found` | `lost+found temp` |
+| target | The target subfolder under which the rdiff backup will be stored. The default location is `/mnt/backup/oxirdiffbackup/TARGET` | `` | `myapp_data` |
+| duration | How long should the files locally be kept before beeing cleaned | `3M` | `6M` |
+
+The example above would look like this:
+```yaml
+oxiscripts_documents_backup:
+  - path: /opt/myapp/mydata
+    exclude: lost+found temp
+    target: myapp_data
+    duration: 6M
+```
+
+The lists of dicts `oxiscripts_rsync_backup` containing the following fields:
+| Name | Comment     | Default value | Example value |
+|-----|---------|-----------------|----------------|
+| path | The path to be backed up | `` | `/opt/myapp/mydata` |
+| exclude | A space separated list of folders to be excluded | `lost+found` | `lost+found temp` |
+| target | The rsync target server string | `` | `yournas::backup/myapp_backup` |
+| options | Options for rsync separated py spaces | `` | `--delete` |
+| user | Username for the rsync server | `{{ oxiscripts_rsync_user }}` | `backup_user` |
+| password | Password for the rsync server | `{{ oxiscripts_rsync_password }}` | `super secret` |
+
+The example above would look like this:
+```yaml
+oxiscripts_documents_backup:
+  - path: /opt/myapp/mydata
+    exclude: lost+found temp
+    target: yournas::backup/myapp_backup
+    options: --delete
+    user: backup_user
+    password: super secret
+```
+
 
 * To update oxiscripts, you need to set the `oxiscripts_update` variable to true. For example `ansible-playbook site.yml all --extra-vars oxiscripts_update=true`
 
