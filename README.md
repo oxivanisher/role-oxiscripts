@@ -27,7 +27,7 @@ The lists of dicts for `oxiscripts_documents_backup` containing the following fi
 | Name | Comment     | Default value | Example value |
 |-----|---------|-----------------|----------------|
 | path | The path to be backed up | `` | `/opt/myapp/mydata` |
-| exclude | A space separated list of folders to be excluded | `lost+found` | `lost+found temp` |
+| exclude | A space separated list of folders to be excluded | `` | `lost+found temp` |
 | target | The target subfolder under which the rdiff backup will be stored. The default location is `/mnt/backup/oxirdiffbackup/TARGET` | `` | `myapp_data` |
 | duration | How long should the files locally be kept before beeing cleaned | `3M` | `6M` |
 

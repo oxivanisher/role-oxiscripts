@@ -101,7 +101,7 @@
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     regexp: "rsyncbackup /mnt/backup/ {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }}"
     line: >
-      EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup /mnt/backup/
+      EXCLUDED_DIR="{{ item.exclude | default('') }}" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup /mnt/backup/
       {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }} "{{ oxiscripts_rsync_mnt_backup_options }}"
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
