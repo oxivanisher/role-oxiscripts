@@ -115,7 +115,7 @@
     dest: /etc/oxiscripts/jobs/backup-documents.sh
     regexp: "rdiffbackup {{ item.path }}"
     line: EXCLUDED_DIR="{{ item.exclude | default('lost+found') }}" rdiffbackup {{ item.path }} {{ item.target }} {{ item.duration | default('3M') }}
-  loop: "{{ oxiscripts_documents_backup | default([]) | dict2items }}"
+  loop: "{{ oxiscripts_documents_backup | default([]) }}"
   notify: Enable daily documents-backup
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
@@ -137,7 +137,7 @@
     line: >
       EXCLUDED_DIR="{{ item.exclude | default('lost+found') }}" RSYNC_PASSWORD="{{ item.password | default(oxiscripts_rsync_password) }}"
       rsyncbackup {{ item.path }} {{ item.user | default(oxiscripts_rsync_user) }}@{{ item.target }}::{{ oxiscripts_rsync_path }} "{{ item.options }}"
-  loop: "{{ oxiscripts_rsync_backup | default([]) | dict2items }}"
+  loop: "{{ oxiscripts_rsync_backup | default([]) }}"
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
