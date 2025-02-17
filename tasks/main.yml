@@ -105,7 +105,7 @@
       {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }} "{{ oxiscripts_rsync_mnt_backup_options }}"
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
-  when: oxiscripts_rsync_path | length > 0
+  when: oxiscripts_rsync_path | default('', true) | length > 0
   become: true
   become_user: root
 
