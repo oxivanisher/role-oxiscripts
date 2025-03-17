@@ -1,7 +1,9 @@
 ---
-- name: Ensure rsync
+- name: Ensure job dependencies
   ansible.builtin.package:
-    name: rsync
+    name:
+      - rsync
+      - fdupes
     state: present
   become: true
   become_user: root
