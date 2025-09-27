@@ -14,25 +14,26 @@
     path: /etc/oxiscripts/
   register: oxiscripts_dir
 
-- name: Fetch oxiscripts installer
-  ansible.builtin.get_url:
-    url: "{{ oxiscripts_mirror }}"
-    dest: /tmp/install.sh
-    mode: "0755"
-  when: not oxiscripts_dir.stat.exists or oxiscripts_update
-
-- name: Run oxiscripts installer # noqa: command-instead-of-shell
-  ansible.builtin.shell: /tmp/install.sh
-  changed_when: true
+- name: Install oxiscripts
   when: not oxiscripts_dir.stat.exists or oxiscripts_update
   become: true
   become_user: root
+  block:
 
-- name: Remove oxiscripts installer
-  ansible.builtin.file:
-    path: /tmp/install.sh
-    state: absent
-  when: not oxiscripts_dir.stat.exists or oxiscripts_update
+    - name: Fetch oxiscripts installer
+      ansible.builtin.get_url:
+        url: "{{ oxiscripts_mirror }}"
+        dest: /tmp/install.sh
+        mode: "0755"
+
+    - name: Run oxiscripts installer # noqa: command-instead-of-shell
+      ansible.builtin.shell: /tmp/install.sh
+      changed_when: true
+
+    - name: Remove oxiscripts installer
+      ansible.builtin.file:
+        path: /tmp/install.sh
+        state: absent
 
 # new backup scripts
 - name: Check for new backup-cleanup script version
