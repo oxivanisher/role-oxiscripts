@@ -15,7 +15,7 @@
   register: oxiscripts_dir
 
 - name: Install oxiscripts
-  when: not oxiscripts_dir.stat.exists or oxiscripts_update
+  when: not oxiscripts_dir.stat.exists or oxiscripts_update | bool
   become: true
   become_user: root
   block:
