@@ -9,6 +9,7 @@ oxiscripts_rsync_user:
 oxiscripts_rsync_password:
 oxiscripts_rsync_path:
 oxiscripts_rsync_mnt_backup_options:
+oxiscripts_rsync_documents_options: --delete
 oxiscripts_backup_cleanup: 60
 oxiscripts_documents_backup: []
 oxiscripts_rsync_backup: []
