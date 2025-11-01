@@ -134,7 +134,7 @@
       {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ backup_object_dest_path }} "{{ oxiscripts_rsync_documents_options }}"
   vars:
     backup_object_src_path: "/mnt/backup/oxirdiffbackup/{{ ansible_hostname }}/{{ item.target }}"
-    backup_object_dest_path: "{{ oxiscripts_rsync_mnt_backup_options }}/{{ ansible_hostname }}/{{ item.target }}"
+    backup_object_dest_path: "{{ oxiscripts_rsync_path }}/{{ ansible_hostname }}/{{ item.target }}"
   loop: "{{ oxiscripts_documents_backup | default([]) }}"
   notify: Enable daily rsync-backup
   ignore_errors: "{{ ansible_check_mode }}"
