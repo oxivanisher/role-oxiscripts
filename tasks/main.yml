@@ -103,7 +103,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     regexp: "rsyncbackup /mnt/backup/ {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }}"
-    line: >
+    line: >-
       EXCLUDED_DIR="lost+found oxirdiffbackup" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup /mnt/backup/
       {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }} "{{ oxiscripts_rsync_mnt_backup_options }}"
   notify: Enable daily rsync-backup
@@ -129,7 +129,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     regexp: "rsyncbackup {{ backup_object_src_path }} {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ backup_object_dest_path }}"
-    line: >
+    line: >-
       EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup {{ backup_object_src_path }}
       {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ backup_object_dest_path }} "{{ oxiscripts_rsync_documents_options }}"
   vars:
@@ -155,7 +155,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     regexp: "rsyncbackup {{ item.path }}"
-    line: >
+    line: >-
       EXCLUDED_DIR="{{ item.exclude | default('lost+found') }}" RSYNC_PASSWORD="{{ item.password | default(oxiscripts_rsync_password) }}"
       rsyncbackup {{ item.path }} {{ item.user | default(oxiscripts_rsync_user) }}@{{ item.target }} "{{ item.options }}"
   loop: "{{ oxiscripts_rsync_backup | default([]) }}"
