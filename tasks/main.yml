@@ -133,7 +133,7 @@
       EXCLUDED_DIR="lost+found" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup {{ backup_object_src_path }}
       {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ backup_object_dest_path }} "{{ oxiscripts_rsync_documents_options }}"
   vars:
-    backup_object_src_path: "/mnt/backup/oxirdiffbackup/{{ ansible_hostname }}/{{ item.target }}"
+    backup_object_src_path: "/mnt/backup/oxirdiffbackup/{{ ansible_hostname }}/{{ item.target }}/"
     backup_object_dest_path: "{{ oxiscripts_rsync_path }}/oxirdiffbackup/{{ ansible_hostname }}/{{ item.target }}"
   loop: "{{ oxiscripts_documents_backup | default([]) }}"
   notify: Enable daily rsync-backup
