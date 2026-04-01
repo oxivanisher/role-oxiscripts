@@ -1,5 +1,4 @@
 ---
-
 - name: Enable daily documents-backup
   ansible.builtin.file:
     src: /etc/oxiscripts/jobs/backup-documents.sh
@@ -8,7 +7,6 @@
     group: root
     state: link
   become: true
-  become_user: root
 
 - name: Enable daily backup-cleanup
   ansible.builtin.file:
@@ -18,7 +16,6 @@
     group: root
     state: link
   become: true
-  become_user: root
 
 - name: Enable daily rsync-backup
   ansible.builtin.file:
@@ -28,4 +25,3 @@
     group: root
     state: link
   become: true
-  become_user: root
