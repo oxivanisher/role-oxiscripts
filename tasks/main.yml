@@ -6,7 +6,6 @@
       - fdupes
     state: present
   become: true
-  become_user: root
 
 # basic install
 - name: Check if oxiscripts are already installed
@@ -17,9 +16,7 @@
 - name: Install oxiscripts
   when: not oxiscripts_dir.stat.exists or oxiscripts_update | bool
   become: true
-  become_user: root
   block:
-
     - name: Fetch oxiscripts installer
       ansible.builtin.get_url:
         url: "{{ oxiscripts_mirror }}"
@@ -41,42 +38,36 @@
     path: /etc/oxiscripts/jobs/backup-cleanup.sh.new
   register: oxiscript_new_backup_cleanup
   become: true
-  become_user: root
 
 - name: Use new backup-cleanup script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-cleanup.sh.new /etc/oxiscripts/jobs/backup-cleanup.sh
   changed_when: true
   when: oxiscript_new_backup_cleanup.stat.exists
   become: true
-  become_user: root
 
 - name: Check for new backup-system script version
   ansible.builtin.stat:
     path: /etc/oxiscripts/jobs/backup-system.sh.new
   register: oxiscript_new_system_backup
   become: true
-  become_user: root
 
 - name: Use new backup-system script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-system.sh.new /etc/oxiscripts/jobs/backup-system.sh
   changed_when: true
   when: oxiscript_new_system_backup.stat.exists
   become: true
-  become_user: root
 
 - name: Check for new backup-scripts script version
   ansible.builtin.stat:
     path: /etc/oxiscripts/jobs/backup-scripts.sh.new
   register: oxiscript_new_backup_scripts
   become: true
-  become_user: root
 
 - name: Use new backup-scripts script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-scripts.sh.new /etc/oxiscripts/jobs/backup-scripts.sh
   changed_when: true
   when: oxiscript_new_backup_scripts.stat.exists
   become: true
-  become_user: root
 
 # basic configuration
 - name: Set root email
@@ -86,7 +77,6 @@
     line: "export ADMINMAIL={{ oxiscripts_email }}"
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
-  become_user: root
 
 # backup rsync
 - name: Disable example rsync backup
@@ -94,10 +84,8 @@
     dest: /etc/oxiscripts/jobs/backup-rsync.sh
     regexp: '^rsyncbackup /mnt/backup rsync://backup@your.host.com/rsync-dir "--bwlimit=1000"'
     line: '#rsyncbackup /mnt/backup rsync://backup@your.host.com/rsync-dir "--bwlimit=1000"'
-  changed_when: false
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
-  become_user: root
 
 - name: Configure base rsync backup
   ansible.builtin.lineinfile:
@@ -107,10 +95,10 @@
       EXCLUDED_DIR="lost+found oxirdiffbackup" RSYNC_PASSWORD="{{ oxiscripts_rsync_password }}" rsyncbackup /mnt/backup/
       {{ oxiscripts_rsync_user }}@{{ oxiscripts_rsync_server }}::{{ oxiscripts_rsync_path }} "{{ oxiscripts_rsync_mnt_backup_options }}"
   notify: Enable daily rsync-backup
+  no_log: true
   ignore_errors: "{{ ansible_check_mode }}"
   when: oxiscripts_rsync_path | default('', true) | length > 0
   become: true
-  become_user: root
 
 # backup documents
 - name: Configure documents backup script
@@ -122,7 +110,6 @@
   notify: Enable daily documents-backup
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
-  become_user: root
 
 # if rsync is enabled, rsync eachbackup documents
 - name: Configure documents backup script
@@ -137,10 +124,10 @@
     backup_object_dest_path: "{{ oxiscripts_rsync_path }}/oxirdiffbackup/{{ ansible_facts.hostname }}/{{ item.target }}"
   loop: "{{ oxiscripts_documents_backup | default([]) }}"
   notify: Enable daily rsync-backup
+  no_log: true
   ignore_errors: "{{ ansible_check_mode }}"
   when: oxiscripts_rsync_path | default('', true) | length > 0
   become: true
-  become_user: root
 
 # backup additional rsync
 - name: Removing old rsync backup link
@@ -149,7 +136,6 @@
     state: absent
   notify: Enable daily rsync-backup
   become: true
-  become_user: root
 
 - name: Configure additional rsync backups
   ansible.builtin.lineinfile:
@@ -160,9 +146,9 @@
       rsyncbackup {{ item.path }} {{ item.user | default(oxiscripts_rsync_user) }}@{{ item.target }} "{{ item.options }}"
   loop: "{{ oxiscripts_rsync_backup | default([]) }}"
   notify: Enable daily rsync-backup
+  no_log: true
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
-  become_user: root
 
 # configure cleanup
 - name: Removing old daily backup cleanup link
@@ -171,7 +157,6 @@
     state: absent
   notify: Enable daily backup-cleanup
   become: true
-  become_user: root
 
 - name: Configure backup cleanup
   ansible.builtin.lineinfile:
@@ -181,4 +166,3 @@
   notify: Enable daily backup-cleanup
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
-  become_user: root
