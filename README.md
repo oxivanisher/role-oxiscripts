@@ -53,7 +53,7 @@ The lists of dicts `oxiscripts_rsync_backup` containing the following fields:
 
 The example above would look like this:
 ```yaml
-oxiscripts_documents_backup:
+oxiscripts_rsync_backup:
   - path: /opt/myapp/mydata
     exclude: lost+found temp
     target: yournas::backup/myapp_backup
