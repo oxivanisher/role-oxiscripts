@@ -131,13 +131,12 @@
   become: true
 
 # backup additional rsync
-- name: Cleanup old symlinks
+- name: Removing old daily rsync backup links
   ansible.builtin.file:
     dest: "{{ item }}"
     state: absent
   loop:
     - /etc/cron.daily/backup-rsync
-    - /etc/cron.daily/backup-Z98-cleanup
     - /etc/cron.daily/backup-Z99-rsync
   notify: Enable daily rsync-backup
   become: true
@@ -156,10 +155,13 @@
   become: true
 
 # configure cleanup
-- name: Removing old daily backup cleanup link
+- name: Removing old daily backup cleanup links
   ansible.builtin.file:
-    path: /etc/cron.daily/backup-cleanup
+    dest: "{{ item }}"
     state: absent
+  loop:
+    - /etc/cron.daily/backup-cleanup
+    - /etc/cron.daily/backup-Z98-cleanup
   notify: Enable daily backup-cleanup
   become: true
 
