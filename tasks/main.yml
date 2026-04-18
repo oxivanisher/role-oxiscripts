@@ -105,7 +105,8 @@
   ansible.builtin.lineinfile:
     dest: /etc/oxiscripts/jobs/backup-documents.sh
     regexp: "rdiffbackup {{ item.path }}"
-    line: EXCLUDED_DIR="{{ item.exclude | default('') }}" rdiffbackup {{ item.path }} {{ item.target }} {{ item.duration | default('3M') }}
+    line: >-
+      EXCLUDED_DIR="{{ item.exclude | default('') }}" rdiffbackup {{ item.path }} {{ item.target }} {{ item.duration | default('3M') }}
   loop: "{{ oxiscripts_documents_backup | default([]) }}"
   notify: Enable daily documents-backup
   ignore_errors: "{{ ansible_check_mode }}"
@@ -130,10 +131,14 @@
   become: true
 
 # backup additional rsync
-- name: Removing old rsync backup link
+- name: Cleanup old symlinks
   ansible.builtin.file:
-    path: /etc/cron.daily/backup-rsync
+    dest: "{{ item }}"
     state: absent
+  loop:
+    - /etc/cron.daily/backup-rsync
+    - /etc/cron.daily/backup-Z98-cleanup
+    - /etc/cron.daily/backup-Z99-rsync
   notify: Enable daily rsync-backup
   become: true
 

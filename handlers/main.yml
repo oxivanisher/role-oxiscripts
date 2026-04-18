@@ -8,15 +8,6 @@
     state: link
   become: true
 
-- name: Cleanup old symlinks
-  ansible.builtin.file:
-    dest: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/cron.daily/backup-Z98-cleanup
-    - /etc/cron.daily/backup-Z99-rsync
-  become: true
-
 - name: Enable daily backup-cleanup
   ansible.builtin.file:
     src: /etc/oxiscripts/jobs/backup-cleanup.sh
