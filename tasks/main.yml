@@ -36,37 +36,37 @@
 - name: Check for new backup-cleanup script version
   ansible.builtin.stat:
     path: /etc/oxiscripts/jobs/backup-cleanup.sh.new
-  register: oxiscript_new_backup_cleanup
+  register: oxiscripts_new_backup_cleanup
   become: true
 
 - name: Use new backup-cleanup script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-cleanup.sh.new /etc/oxiscripts/jobs/backup-cleanup.sh
   changed_when: true
-  when: oxiscript_new_backup_cleanup.stat.exists
+  when: oxiscripts_new_backup_cleanup.stat.exists
   become: true
 
 - name: Check for new backup-system script version
   ansible.builtin.stat:
     path: /etc/oxiscripts/jobs/backup-system.sh.new
-  register: oxiscript_new_system_backup
+  register: oxiscripts_new_system_backup
   become: true
 
 - name: Use new backup-system script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-system.sh.new /etc/oxiscripts/jobs/backup-system.sh
   changed_when: true
-  when: oxiscript_new_system_backup.stat.exists
+  when: oxiscripts_new_system_backup.stat.exists
   become: true
 
 - name: Check for new backup-scripts script version
   ansible.builtin.stat:
     path: /etc/oxiscripts/jobs/backup-scripts.sh.new
-  register: oxiscript_new_backup_scripts
+  register: oxiscripts_new_backup_scripts
   become: true
 
 - name: Use new backup-scripts script version
   ansible.builtin.command: mv /etc/oxiscripts/jobs/backup-scripts.sh.new /etc/oxiscripts/jobs/backup-scripts.sh
   changed_when: true
-  when: oxiscript_new_backup_scripts.stat.exists
+  when: oxiscripts_new_backup_scripts.stat.exists
   become: true
 
 # basic configuration
